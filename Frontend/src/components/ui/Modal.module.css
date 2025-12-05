@@ -1,0 +1,267 @@
+.modalBackdrop {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    background-color: rgba(0, 0, 0, 0.7); 
+    z-index: 9999; 
+}
+
+.modalContent {
+    max-width: 500px; 
+    width: 90%; 
+    background-color: #0d1117; 
+    padding: 30px;
+    border-radius: 12px;
+    color: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    max-height: 95%;
+    overflow-y: auto;
+    
+}
+
+.modalContent h2 {
+    color: #e94560;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+.formGroup {
+    margin-bottom: 15px;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #90a4ae;
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    background-color: #161b22;
+    color: #ffffff;
+    box-sizing: border-box;
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.formActions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+}
+
+.formActions button[type="submit"] {
+    background-color: #e94560;
+    color: white;
+}
+
+.formActions button[type="submit"]:hover {
+    background-color: #c9344f;
+}
+
+.formActions button[type="button"] {
+    background-color: #30363d;
+    color: #ffffff;
+}
+
+.formActions button[type="button"]:hover {
+    background-color: #444c56;
+}
+
+.genreList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; 
+    margin-top: 5px;
+    padding: 5px;
+    border: 1px solid #ccc; 
+    border-radius: 4px;
+}
+
+.checkboxItem {
+    display: flex;
+    align-items: center;
+}
+
+.checkboxItem label {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.imagePreview {
+    display: block; 
+    max-width: 200; 
+    max-height: 200px;
+
+    margin-top: 10px; 
+    border-radius: 6px;
+    border: 1px solid #30363d;
+}
+
+.infoTitle {
+    color: #e94560;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+/* InfoModal */
+.infoLayout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.infoImage {
+    max-width: 300px;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+}
+
+.noImagePlaceholder {
+    width: 150px;
+    height: 225px;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+}
+
+.infoDetails {
+    flex-grow: 1;
+}
+
+.summaryText {
+    color: #ccc;
+    line-height: 1.5;
+    margin-top: 5px;
+}
+
+/* DeleteModal */
+.deleteTitle {
+    color: #dc3545;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+.deleteWarning {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #cccccc;
+}
+
+.deleteWarning strong {
+    color: #ffffff; 
+}
+
+.deleteConfirmButton {
+    background-color: #dc3545;
+    color: white;
+}
+
+.deleteConfirmButton:hover {
+    background-color: #bd2130;
+}
+
+.imageTypeSelector {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 20px; 
+    align-items: center;
+}
+
+.radioLabel {
+    font-weight: normal;
+    font-size: 0.95rem;
+    cursor: pointer;
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+    transition: color 0.2s;
+}
+
+.radioLabel:hover {
+    color: #ffffff;
+}
+
+.radioLabel input[type="radio"] {
+    margin: 0;
+    width: auto; 
+    cursor: pointer;
+}
+
+.uploadingText {
+    color: #e94560;
+    font-size: 0.9rem;
+    margin-top: 8px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+@media (max-width: 768px) {
+    
+    .modalContent {
+        width: 95%;      
+        padding: 20px;   
+        max-height: 85vh; 
+    }
+
+    .infoLayout {
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    .infoImage, .noImagePlaceholder {
+        width: 180px; 
+        height: 270px;
+        margin-bottom: 15px; 
+    }
+
+    .infoDetails {
+        width: 100%; 
+        text-align: left; 
+    }
+
+    .formActions {
+        flex-direction: column-reverse; 
+        width: 100%;
+    }
+
+    .formActions button {
+        width: 100%; 
+        padding: 12px; /* Más área táctil */
+    }
+}

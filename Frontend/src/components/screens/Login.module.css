@@ -1,0 +1,129 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    min-height: 100vh;
+    width: 100%;
+    background-color: #1a1a2e;
+}
+
+.loginBox {
+    background-color: #161b22;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); 
+    width: 100%;
+    max-width: 400px; 
+    text-align: center;
+    border: 1px solid #30363d;
+}
+
+.loginBox h1 {
+    color: #e94560; /* Color de acento */
+    margin-bottom: 10px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.loginBox h2 {
+    color: #ffffff;
+    margin-bottom: 30px;
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+.error {
+    background-color: rgba(233, 69, 96, 0.1); 
+    color: #ff6b6b;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    border: 1px solid rgba(233, 69, 96, 0.3);
+}
+
+.inputGroup {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.inputGroup input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 1rem;
+    outline: none;
+    box-sizing: border-box; 
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.inputGroup input:focus {
+    border-color: #e94560;
+    box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.2);
+}
+
+.inputGroup input::placeholder {
+    color: #8b949e;
+}
+
+.loginButton {
+    width: 100%;
+    padding: 12px;
+    background-color: #e94560;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    margin-top: 10px;
+}
+
+.loginButton:hover {
+    background-color: #c9344f;
+}
+
+.loginButton:active {
+    transform: scale(0.98);
+}
+
+.registerLink {
+    margin-top: 20px;
+    color: #8b949e;
+    font-size: 0.9rem;
+}
+
+.registerLink span {
+    color: #e94560;
+    cursor: pointer;
+    font-weight: 600;
+    margin-left: 5px;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.registerLink span:hover {
+    text-decoration: underline;
+    color: #ff8fa3;
+}
+
+
+@media (max-width: 480px) {
+    .loginBox {
+        padding: 20px;
+        width: 90%;
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
+    }
+    
+    .container {
+        align-items: flex-start;
+        padding-top: 50px;
+    }
+}
