@@ -2,24 +2,45 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from './Login.module.css'; 
+import * as yup from 'yup';
 
 const RegisterPage = () => {
     const [formData, setFormData] = useState({ username: '', password: '' });
     const navigate = useNavigate();
     const [error, setError] = useState('');
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const validationSchema = yup.object().shape({
+        username: yup.string().required("Username is required"),
+        password: yup.string()
+            .required("Password is required")
+            .min(6, "Password must be at least 6 characters long"),
+    });
+
+    const handleValidationAndSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError(''); 
+
         try {
+            await validationSchema.validate(formData, { abortEarly: false });
+            
             const response = await axios.post('http://localhost:8080/api/auth/register', formData);
             
             localStorage.setItem('token', response.data.token);
-            
             navigate('/home');
+            
         } catch (err) {
-            setError('Error: username already exists.');
+            
+            if (err instanceof yup.ValidationError) {
+                setError(err.errors[0] || 'Validation failed.');
+            } else if (axios.isAxiosError(err) && err.response && err.response.status === 400) {
+                 setError('Error: username already exists.');
+            } else {
+                setError('Error: username already exists.');
+            }
         }
     };
+
+
 
     return (
         <div className={styles.container}>
@@ -29,7 +50,7 @@ const RegisterPage = () => {
                 
                 {error && <p className={styles.error}>{error}</p>}
                 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleValidationAndSubmit}>
                     <div className={styles.inputGroup}>
                         <input 
                             type="text" 

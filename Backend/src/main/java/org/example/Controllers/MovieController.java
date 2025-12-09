@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -17,11 +18,12 @@ public class MovieController {
 
     @GetMapping
     public List<Movie> getAllMovies(
+            Principal principal,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String genre,
             @RequestParam(required = false, defaultValue = "asc") String sort) {
 
-        return movieService.getAllMovies(title, genre, sort);
+        return movieService.getAllMovies(principal.getName(), title, genre, sort);
     }
 
     @GetMapping("/{id}")
@@ -32,14 +34,14 @@ public class MovieController {
     }
 
     @PostMapping
-    public Movie createMovie(@RequestBody Movie movie) {
-        return movieService.createMovie(movie);
+    public Movie createMovie(Principal principal, @RequestBody Movie movie) {
+        return movieService.createMovie(principal.getName(), movie);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Movie> updateMovie(@PathVariable Long id, @RequestBody Movie movieDetails) {
+    public ResponseEntity<Movie> updateMovie(Principal principal, @PathVariable Long id, @RequestBody Movie movieDetails) {
         try {
-            Movie updatedMovie = movieService.updateMovie(id, movieDetails);
+            Movie updatedMovie = movieService.updateMovie(principal.getName(), id, movieDetails);
             return ResponseEntity.ok(updatedMovie);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -47,9 +49,9 @@ public class MovieController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMovie(@PathVariable Long id) {
+    public ResponseEntity<?> deleteMovie(Principal principal, @PathVariable Long id) {
         try {
-            movieService.deleteMovie(id);
+            movieService.deleteMovie(principal.getName(), id);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();

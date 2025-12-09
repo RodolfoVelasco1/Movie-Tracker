@@ -4,8 +4,10 @@ import jakarta.transaction.Transactional;
 import org.example.Entities.Genre;
 import org.example.Entities.Movie;
 import org.example.Entities.Series;
+import org.example.Entities.User;
 import org.example.Repositories.GenreRepository;
 import org.example.Repositories.SeriesRepository;
+import org.example.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -23,8 +25,13 @@ public class SeriesService {
     @Autowired
     private GenreRepository genreRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Transactional
-    public List<Series> getAllSeries(String title, String genreName, String sortDirection) {
+    public List<Series> getAllSeries(String username, String title, String genreName, String sortDirection) {
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         Sort sort = Sort.by("title");
 
@@ -35,13 +42,11 @@ public class SeriesService {
         }
 
         if (genreName != null && !genreName.isEmpty()) {
-            return seriesRepository.findByGenresName(genreName, sort);
+            return seriesRepository.findByUserAndGenresName(currentUser, genreName, sort);
         }
 
-        return seriesRepository.findAll(sort);
+        return seriesRepository.findByUser(currentUser, sort);
     }
-
-
 
     @Transactional
     public Optional<Series> getSeriesById(Long id) {
@@ -49,14 +54,23 @@ public class SeriesService {
     }
 
     @Transactional
-    public Series createSeries(Series series) {
+    public Series createSeries(String username, Series series) {
+        User currentUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        series.setUser(currentUser);
+
         return seriesRepository.save(series);
     }
 
     @Transactional
-    public Series updateSeries(Long id, Series seriesDetails) {
+    public Series updateSeries(String username, Long id, Series seriesDetails) {
         Series series = seriesRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Series not found with id: " + id));
+
+        if (!series.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("You are not allowed to edit this movie");
+        }
 
         series.setTitle(seriesDetails.getTitle());
         series.setSummary(seriesDetails.getSummary());
@@ -82,9 +96,13 @@ public class SeriesService {
     }
 
     @Transactional
-    public void deleteSeries(Long id) {
+    public void deleteSeries(String username, Long id) {
         Series series = seriesRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Series not found with id: " + id));
+
+        if (!series.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("You are not allowed to delete this movie");
+        }
         seriesRepository.delete(series);
     }
 

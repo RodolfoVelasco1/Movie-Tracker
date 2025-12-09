@@ -36,6 +36,10 @@ public class Movie {
     )
     private Set<Genre> genres = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     public Movie() {
     }
 
@@ -104,4 +108,11 @@ public class Movie {
         this.genres = genres;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

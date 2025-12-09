@@ -39,6 +39,10 @@ public class Series {
     )
     private Set<Genre> genres = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     public Series() {
     }
 
@@ -112,5 +116,13 @@ public class Series {
 
     public void setGenres(Set<Genre> genres) {
         this.genres = genres;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

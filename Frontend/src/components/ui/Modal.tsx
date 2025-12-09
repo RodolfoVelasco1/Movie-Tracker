@@ -1,6 +1,7 @@
 import React, { useState, type ChangeEvent, type FormEvent } from 'react'
 import styles from './Modal.module.css'
 import type { Genre } from '../../types';
+import * as yup from 'yup';
 
 interface ModalProps {
     handleCloseModal: () => void;
@@ -48,6 +49,43 @@ const Modal: React.FC<ModalProps> = ({
   const [imageInputType, setImageInputType] = useState('url');
   const [isUploading, setIsUploading] = useState(false);
 
+  const handleValidationAndSubmit = async (e: FormEvent) => {
+    e.preventDefault(); 
+
+    const schema = yup.object().shape({
+      title: yup.string().required("Title is required"),
+      summary: yup.string().required("Summary is required"),
+      duration: yup.number()
+        .transform((value) => (isNaN(value) ? undefined : value)) 
+        .required("Duration is required and must be a number")
+        .positive("Duration must be positive")
+        .integer(),
+      imageUrl: yup.string().required("Image is required"),
+      genres: yup.array().min(1, "Select at least one genre"),
+
+      episodes: entityName === 'Series' 
+          ? yup.string().required("Episodes are required for Series") 
+          : yup.string().notRequired()
+    });
+
+    const dataToCheck = {
+      ...formData,
+      genres: selectedGenres
+    };
+
+    try {
+      await schema.validate(dataToCheck, { abortEarly: false });
+      
+      handleSubmit(e);
+
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        alert(error.errors[0]); 
+      }
+    }
+  };
+
+
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (!file) return;
@@ -85,7 +123,7 @@ const Modal: React.FC<ModalProps> = ({
             <div className={styles.modalContent}>
               <div className={styles.formContainer}>
             <h2>{isEditing ? `Edit this ${entityName}` : `Add a new ${entityName}`}</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleValidationAndSubmit}>
               <div className={styles.formGroup}>
                 <label>Title:</label> 
                 <input 

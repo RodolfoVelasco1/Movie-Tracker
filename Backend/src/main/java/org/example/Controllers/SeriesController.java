@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -17,11 +18,12 @@ public class SeriesController {
 
     @GetMapping
     public List<Series> getAllSeries(
+            Principal principal,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String genre,
             @RequestParam(required = false, defaultValue = "asc") String sort) {
 
-        return seriesService.getAllSeries(title, genre, sort);
+        return seriesService.getAllSeries(principal.getName(), title, genre, sort);
     }
 
 
@@ -33,14 +35,14 @@ public class SeriesController {
     }
 
     @PostMapping
-    public Series createSeries(@RequestBody Series series) {
-        return seriesService.createSeries(series);
+    public Series createSeries(Principal principal, @RequestBody Series series) {
+        return seriesService.createSeries(principal.getName(), series);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Series> updateSeries(@PathVariable Long id, @RequestBody Series seriesDetails) {
+    public ResponseEntity<Series> updateSeries(Principal principal, @PathVariable Long id, @RequestBody Series seriesDetails) {
         try {
-            Series updatedSeries = seriesService.updateSeries(id, seriesDetails);
+            Series updatedSeries = seriesService.updateSeries(principal.getName(), id, seriesDetails);
             return ResponseEntity.ok(updatedSeries);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -48,9 +50,9 @@ public class SeriesController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSeries(@PathVariable Long id) {
+    public ResponseEntity<?> deleteSeries(Principal principal, @PathVariable Long id) {
         try {
-            seriesService.deleteSeries(id);
+            seriesService.deleteSeries(principal.getName(), id);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
