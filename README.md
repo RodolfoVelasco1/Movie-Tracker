@@ -11,6 +11,9 @@ A full-stack web application for tracking movies and TV series across different 
 - **Password Encryption**: BCrypt password hashing
 - **Session Management**: Stateless authentication with JWT tokens
 
+### User-Centric Data
+- **Personalized Lists**: Each user has their own independent database of movies and series. Content created by one user is private and not visible to others.
+
 ### Content Management
 - **Dual Tracking System**: Separate interfaces for movies and TV series
 - **Status Management**: Organize content across three lists:
@@ -27,6 +30,7 @@ A full-stack web application for tracking movies and TV series across different 
 - **Responsive Modals**: Info modal, edit modal, and delete confirmation
 - **Status Transitions**: Move items between lists with arrow buttons
 - **Persistent Sessions**: Token-based authentication with localStorage
+- **Form Validation**: Robust form validation using **Yup** to ensure data integrity before submission (e.g., required fields, valid URLs, positive numbers).
 
 ## 🛠️ Tech Stack
 
@@ -45,6 +49,7 @@ A full-stack web application for tracking movies and TV series across different 
 - **Axios** - HTTP client with interceptors
 - **CSS Modules** - Component-scoped styling
 - **Vite** - Build tool
+- **Yup** - Schema builder for runtime value parsing and validation
 
 ## 📋 Prerequisites
 
@@ -133,7 +138,6 @@ The app will be available at `http://localhost:5173`
 ```
 src/main/java/org/example/
 ├── Config/
-│   ├── CorsConfig.java              # CORS configuration
 │   ├── DataInitializer.java         # Genre data initialization
 │   ├── JwtAuthenticationFilter.java # JWT request filter
 │   ├── JwtService.java              # JWT token operations
@@ -281,7 +285,7 @@ Two options for adding images:
 ## 🔧 Configuration
 
 ### CORS
-The backend is configured to accept requests from `http://localhost:5173` with credentials support for JWT authentication.
+CORS is centrally configured within `SecurityConfig.java` to accept requests from the frontend origin (`http://localhost:5173`) and allow credentials, ensuring secure communication with the React app.
 
 ### Security
 - **JWT Secret**: Configure in `application.properties` (use a strong secret in production)
